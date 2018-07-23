@@ -1,3 +1,3 @@
 <?php
 USER::isAuthorized();
-//View::display('index');
+View::display('index');

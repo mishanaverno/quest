@@ -16,7 +16,7 @@ abstract class Router
 		}
 		
 	}
-	public static function location($url){
+	public static function location($url = ''){
 		header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$url);
 	}
 }

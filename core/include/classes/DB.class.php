@@ -15,11 +15,16 @@ abstract class DB
 		$mysqli = new mysqli($cfg->host,$cfg->user,$cfg->password,$cfg->db_name);
 		return $mysqli;
 	}
-	private function makeQuery($query)
+	public function makeQuery($query)
 	{
 		$mysqli = self::connect();
 		$res = $mysqli->query($query);
-		$row = $res->fetch_assoc();
+		if($res && $res->num_rows){
+			$row = $res->fetch_all(MYSQLI_ASSOC);
+		}else{
+			$row = false;
+		}
 		$mysqli->close();
+		return $row;
 	}
 }

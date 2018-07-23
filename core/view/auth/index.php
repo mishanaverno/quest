@@ -14,7 +14,7 @@
 					<fieldset>
 						<div class="form-group ">
 							<label for="ALogin">Login</label>
-							<input type="text" name="auth_log" class="form-control form-control-lg" id="ALogin" aria-describedby="loginHelp" placeholder="Enter login">
+							<input type="text" name="auth_login" class="form-control form-control-lg" id="ALogin" aria-describedby="loginHelp" placeholder="Enter login">
 							<small id="loginHelp" class="form-text text-muted">Поле ввода для логина если ты забыл</small>
 						</div>
 						<div class="form-group">
@@ -28,6 +28,6 @@
 			</div>
 		</div>
 	</div>
-	<?php var_dump($_POST) ?>
+	<?php var_dump($_SESSION) ?>
 </div>
 <?php View::layout('footer'); ?>
