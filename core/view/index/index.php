@@ -1,5 +1,4 @@
 <?php View::layout('head',['title'=>'Главная']); ?>
-<body>
-	<p>hello world <?=USER::$data->name?></p>
-</body>	
-</html>
+<?php View::layout('header'); ?>
+	<p>hello world asdsdsd <?=USER::$data->name?></p>
+<?php View::layout('footer'); ?>
