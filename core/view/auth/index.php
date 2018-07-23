@@ -21,7 +21,7 @@
 							<label for="APassword">Password</label>
 							<input type="password" name="auth_pass" class="form-control form-control-lg" id="APassword" placeholder="Password">
 						</div>
-						<input type="hidden" name="data-action" value="auth">
+						<input type="hidden" name="action" value="auth-login">
 						<button type="submit" class="btn btn-primary">Вход</button>
 					</fieldset>
 				</form>

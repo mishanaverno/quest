@@ -10,7 +10,7 @@ abstract class View
 			}
 			require $file;
 		}else{
-			echo 'Не найдено представление "'.$view.'"';
+			echo 'Не найдено представление - "'.$view.'"';
 		}
 	}
 	public static function layout($tpl, $vars = [])
@@ -22,7 +22,7 @@ abstract class View
 			}
 			require $file;
 		}else{
-			echo 'Не найден шаблон "'.$tpl.'"';
+			echo 'Не найден шаблон - "'.$tpl.'"';
 		}	
 	}
 }
