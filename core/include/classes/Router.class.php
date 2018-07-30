@@ -16,6 +16,15 @@ abstract class Router
 		}
 		
 	}
+	public static function get(){
+		$path = $_SERVER['REQUEST_URI'];
+		if(strpos($path,'?')!==-1){
+			$path = explode('?',$path)[0];
+		}
+		$aliace = end(explode('/', $path));
+		$aliace = $aliace != '' ? $aliace : 'Index';
+		return $aliace;
+	}
 	public static function location($url = ''){
 		header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$url);
 	}
