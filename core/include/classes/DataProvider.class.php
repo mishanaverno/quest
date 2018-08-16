@@ -7,12 +7,21 @@ abstract class DataProvider
 		if ($model){
 			$fields = [];
 			foreach ($model->fields as $k => $v) {
-				$fields[] = $k.' AS '.$v['dbfield'];
+				$fields[] = $v['dbfield'].' AS '.$k;
+				unset($model->fields[$k]['dbfield']);
 			}
 			$query = "SELECT ".implode(', ',$fields)." FROM ".$model->tablename." ";
 			if ($where) $query .= $where;
+			$response = DB::makeQuery($query);
+			if($response){
+				$result = self::composeResponse($response, $model);
+			}else{
+				$result = false;
+			}  
+		}else{
+			 $result = false;;
 		}
-		return DB::makeQuery($query);
+		return $result;
 	}
 	public static function loadModel($modelname)
 	{
@@ -23,5 +32,18 @@ abstract class DataProvider
 		}else{
 			return false;
 		}
+	}
+	private static function constructQuery($model, $where)
+	{
+
+	}
+	private static function composeResponse($response, $model)
+	{	
+		$headers = $model->fields;
+		unset($model->fields);
+		$data = (object) ['headers'=>$headers, 'rows' => $response];
+		$result = ['model' => $model,'data'=>$data];
+		return $result;
+		
 	}
 }

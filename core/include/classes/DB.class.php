@@ -4,10 +4,9 @@ abstract class DB
 	public static $cfg;
 	public static function init()
 	{	
-		$json = json_decode(file_get_contents(CONFIG_PATH.'db.config.json'));
-		foreach ($json as $k => $v) {
-			self::$cfg->$k = $v;
-		}
+		require_once CONFIG_PATH.'db.config.php';
+		self::$cfg = (object) $config;
+		
 	}
 	private function connect()
 	{	

@@ -1,0 +1,10 @@
+:root{
+	--red-color: #ff0000;
+}
+.color-red{
+	color: #ff0000;
+	color: var(--red-color);
+}
+.icon-control{
+	padding: 5px;
+}

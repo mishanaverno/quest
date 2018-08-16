@@ -32,4 +32,17 @@ abstract class GETP
 		}
 		return $data;
 	}
+	public static function add($parametrs = [], $return = null)
+	{
+		$result = self::get();
+		foreach ($parametrs as $k => $v) {
+			$result->$k = $v;
+		}
+		switch ($return) {
+			case 'string':
+				$result = http_build_query($result);
+				break;
+		}
+		return $result;
+	}
 }

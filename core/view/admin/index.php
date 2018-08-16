@@ -2,10 +2,12 @@
 <?php View::layout('admin-header'); ?>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col">
-				<h1>Admin panel</h1>
-				<?php AdminPanel::init(); ?>
+			<div class="col-6">
+				<?php View::position('left') ?>
 			</div>		
+			<div class="col-6">
+				<?php View::position('right') ?>
+			</div>
 		</div>
 	</div>
 <?php View::layout('footer'); ?>

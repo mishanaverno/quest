@@ -15,6 +15,7 @@ require CLASSES_PATH.'Router.class.php';
 require CLASSES_PATH.'View.class.php';
 require CLASSES_PATH.'User.class.php';
 require CLASSES_PATH.'DataProvider.class.php';
+require_once CLASSES_PATH.'Widget.class.php';
 //подключение обработчиков данных
 require PROCESSORS_PATH.'Post.processor.php';
 require PROCESSORS_PATH.'Get.processor.php';

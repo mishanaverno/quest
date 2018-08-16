@@ -1,17 +1,24 @@
 <?php 
 abstract class AdminPanel
 {
-	public static function init()
+	public static function listenGET()
 	{	
 		$action = GETP::get('action');
 		switch (GETP::get('page')) {
 			case 'users':
-				$users = DataProvider::get('user');
-				View::part('usersTable',['users' => $users]);
-				break;
+			if($action){
+				switch ($action){
+					case 'edit':
+
+					break;
+				}
+			}else{
+				return (object) DataProvider::get('user');
+			}
+			break;
 			default:
-				View::part('dashboard');
-				break;
+				
+			break;
 		}
 	}
 }
