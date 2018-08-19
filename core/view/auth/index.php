@@ -1,4 +1,4 @@
-<?php View::layout('head',['title'=>'Авторизация']); ?>
+<?php View::layout('admin-head',['title'=>'Авторизация']); ?>
 <?php View::layout('header'); ?>
 <div class="container ">
 	<div class="row">
@@ -27,6 +27,5 @@
 			</div>
 		</div>
 	</div>
-	<?php var_dump($_SESSION) ?>
 </div>
 <?php View::layout('footer'); ?>

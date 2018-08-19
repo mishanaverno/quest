@@ -9,11 +9,21 @@ abstract class AdminPanel
 			if($action){
 				switch ($action){
 					case 'edit':
+						$data = DataProvider::get('user', 'id='.GETP::get('id'));
+						$data->model->template = 'editRow';
+						return $data;
+					break;
+					case 'update':
+						$response = DataProvider::update('user', 'id='.GETP::get('id'));
+						PHP::vd($response);
+						//Router::location('admin?page=users&response='.$response);
+					break;
+					case 'delete':
 
 					break;
 				}
 			}else{
-				return (object) DataProvider::get('user');
+				return DataProvider::get('user');
 			}
 			break;
 			default:

@@ -20,7 +20,7 @@
 		<?php endforeach; ?>
 			<td>
 				<a href="/admin?<?=GETP::add(['action'=>'edit','id'=>$v['id']], 'string')?>" class="icon-control"><i class="fas fa-edit"></i></a>
-				<a href="" class="icon-control color-red"><i class="fas fa-trash"></i></a>
+				<a href="/admin?<?=GETP::add(['action'=>'delete','id'=>$v['id']], 'string')?>" class="icon-control color-red"><i class="fas fa-trash"></i></a>
 			</td>
 		</tr>
 	<?php endforeach; ?>	
