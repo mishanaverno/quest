@@ -1,5 +1,3 @@
-<?php View::layout('admin-head',['title'=>'Авторизация']); ?>
-<?php View::layout('header'); ?>
 <div class="container ">
 	<div class="row">
 		<div class="col  d-flex justify-content-center">
@@ -28,4 +26,3 @@
 		</div>
 	</div>
 </div>
-<?php View::layout('footer'); ?>

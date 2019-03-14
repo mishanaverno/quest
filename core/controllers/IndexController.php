@@ -1,2 +1,0 @@
-<?php
-View::display('index');
