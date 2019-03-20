@@ -1,0 +1,60 @@
+<div id="root">
+	<div class="main-block">
+		<div class="main-block-pic-contaner"><img src="/assets/images/logo.svg" alt="" class="main-block-pic"></div>
+		<div class="main-block-text">И че ето вы тут зобыли судорь?</div>
+	</div>
+</div>
+<style>
+:root{
+	--font-color: #444;
+	--plate-bg-color: #eee;
+}
+div{
+	box-sizing: border-box;
+}
+html,
+body{
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#root{
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	-ms-align-items: center;
+	align-items: center;
+	padding: 20px;
+    background-size: cover;
+}
+.main-block-pic-contaner{
+	width: 100%;
+	max-width: 400px;
+	padding: 10px;
+}
+.main-block-pic {
+    width: 100%;
+}
+.main-block{
+	font-family: 'Pacifico', cursive;
+	color: var(--font-color);
+	display: flex;
+	-ms-align-items: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+    padding: 15px 25px;
+    border-radius: 20px;
+}
+.main-block-text {
+    font-size: 30px;
+}
+</style>
+
+<script src="/assets/js/unsplash.js"></script>
+<script>
+	$(document).ready(function() {
+		const unsplash = new unsplashCustom();
+		unsplash.loadRandomUnsplash();
+	});
+</script>

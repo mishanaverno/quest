@@ -7,8 +7,8 @@ class Router extends Singleton
 	private $routes;
 	protected static $instance = '';
 	protected function __construct() {	
-		$this->routes = require CONFIG_PATH.'routes.config.php';
-		
+		$this->routes = require_once CONFIG_PATH.'routes.config.php';
+		$this->request_uri = request();	
 	}
 	
 	public function start(){
@@ -17,17 +17,29 @@ class Router extends Singleton
 		if(class_exists($controllerPath)){
 			$controller = $controllerPath::getInstance();
 		}else{
-			$controller = \app\controllers\Controller::getInstance();
+			$this->NotFound404();
 		}
-		$controller->actionIndex();
-		
+		$methodName = 'action'.ucfirst($this->getAction());
+		if(method_exists($controller, $methodName)){
+			$controller->$methodName();
+			exit;
+		}else{
+			$this->NotFound404();
+		}	
+	}
+	public function NotFound404(){
+		$controller = \app\controllers\Controller::getInstance()->actionIndex();
+		exit;
 	}
 	private function getController(){
-		$path = $_SERVER['REQUEST_URI'];
-		return $this->routes[$path]['controller'];
+		return $this->routes[$this->request_uri]['controller'];
 	}
-	
-	public function test(){
-		echo 'y';
+	private function getAction()
+	{
+		return $this->routes[$this->request_uri]['action'];
+	}
+	public function routeTo($to){
+		header("Location: $to");
+		exit;
 	}
 }
