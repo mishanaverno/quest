@@ -6,7 +6,10 @@ abstract class TableField
 	protected $name;
 	protected $value;
 	protected $public = true;
-	protected $null = true;
+	protected $require = false;
+	protected $visible = true;
+	protected $system = false;
+	protected $changed = false;
 	function __construct($name){
 		$this->name = $name;
 		return $this;
@@ -14,6 +17,14 @@ abstract class TableField
 	public function setValue($value){
 		$this->value = $value;
 		return $this;
+	}
+	public function changeValue($value){
+		$this->setValue($value);
+		$this->changed = true;
+		return $this;
+	}
+	public function isChanged(){
+		return $this->changed;
 	}
 	public function getValue(){
 		return $this->value;
@@ -25,11 +36,18 @@ abstract class TableField
 		if(!$value) $value = $this->value;
 		return $value;
 	}
-	public function isNull(){
-		return $this->null;
+	public function isRequire(){
+		return $this->require;
 	}
-	public function null($value){
-		$this->null = (bool) $value;
+	public function require($value = true){
+		$this->require = (bool) $value;
+		return $this;
+	}
+	public function isSystem(){
+		return $this->system;
+	}
+	public function system(){
+		$this->system = true;
 		return $this;
 	}
 }

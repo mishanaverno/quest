@@ -4,6 +4,10 @@ return [
 		'controller' => 'IndexController',
 		'action' => 'index'
 	],
+	'/api/auth'=>[
+		'controller' => 'APIController',
+		'action' => 'auth'
+	],
 	'/api/users'=>[
 		'controller' => 'APIController',
 		'action' => 'users'
@@ -23,6 +27,18 @@ return [
 	'/api/user/delete'=>[ //id
 		'controller' => 'APIController',
 		'action' => 'userDelete'
+	],
+	'/api/books'=>[ 
+		'controller' => 'APIController',
+		'action' => 'books'
+	],
+	'/api/book'=>[ 
+		'controller' => 'APIController',
+		'action' => 'book'
+	],
+	'/api/book/random'=>[ 
+		'controller' => 'APIController',
+		'action' => 'bookRandom'
 	],
 	'/api/test'=>[ 
 		'controller' => 'APIController',

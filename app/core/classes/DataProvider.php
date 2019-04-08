@@ -10,34 +10,19 @@ class DataProvider
 		if(!($row instanceof TableRow)) return $this;
 		$tableName = $row->getTableName();
 		$fields = $row->getFieldsNames();
-		$where = 'WHERE '.$by.'='.$row->prepareFieldValue($by,$id);
-		$res = DB::getInstance()->makeQuery("SELECT $fields from $tableName $where");
-		if(!$res){
-			$res = [];
-		}else{
-			$res = $res[0];
-		}
-		if(empty($res)) return false;
+		$where = $by.'='.$row->prepareFieldValue($by,$id);
+		$res = DB::getInstance()->select($tableName, $fields, $where);
 		
-		$row->load($res);
-
+		if(!$res) return false;
+		$row->load($res[0]);
 		$row->InDB = true;
 		return $row;
 	}
-	public function getCollection($class, $by = []){
+	public function getCollection($class, $where = '', $limit = '', $orderBy = ''){
 		if(!class_exists($class)) return $this;
 		$row = new $class();
 		if(!($row instanceof TableRow)) return $this;
-		$tableName = $row->getTableName();
-		$fields = $row->getFieldsNames();
-		$where = '';
-		if(is_array($by) && !empty($by)){
-			$where = 'WHERE ';
-			foreach ($by as $key => $value) {
-
-			}
-		}
-		$res = DB::getInstance()->makeQuery("SELECT $fields from $tableName $where");
+		$res = DB::getInstance()->select($row->getTableName(), $row->getFieldsNames(), $where, $limit, $orderBy);
 		if(!$res){
 			$res = [];
 		}

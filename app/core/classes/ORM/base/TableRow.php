@@ -15,15 +15,22 @@ abstract class TableRow
 
 	public function setFieldValue($fieldname = false, $value = ''){
 		if($fieldname)
+			if(!isset($this->fields[$fieldname])) return $this;
 			if(!($this->fields[$fieldname] instanceof IdTableField)) 
 				$this->fields[$fieldname]->setValue($value);
+		return $this;
+	}
+	public function changeFieldValue($fieldname = false, $value = ''){
+		if($fieldname)
+			if(!isset($this->fields[$fieldname])) return $this;
+			if(!($this->fields[$fieldname] instanceof IdTableField)) 
+				$this->fields[$fieldname]->changeValue($value);
 		return $this;
 	}
 
 	protected function setId($value){
 		$this->fields['id']->setValue($value);
 	}
-
 	public function getFieldValue($fieldname = false){
 		return $this->fields[$fieldname]->getValue();
 	}
@@ -56,42 +63,38 @@ abstract class TableRow
 		}
 		return $this;
 	}
+	public function new($data = []){
+		foreach ($data as $key => $value) {
+			if($key == 'id') return false;
+			else $this->changeFieldValue($key,$value);
+		}
+		return $this;
+	}
 
 	public function save(){
-		$fields = [];
-		$values = [];
 		
+		$fieldsValues = [];
 		foreach ($this->fields as $key => $field) {
-			
-			if(!$field->isNull() && ($field->getValue() === Null && $field->getName() !== 'id'))
-				return $this;
-			$value = $field->prepareValue();
-
+			if($field->isRequire() && $field->getValue() == '')
+				return false;
 			if($field instanceof IdTableField) continue;
-			$fields[] = $key;
-			$values[] = $value;
+			if($field->isChanged()){
+				$fieldsValues[$field->getName()] = $field->prepareValue();
+			}
 		}
 		$db = DB::getInstance();
 		$db->connect();
 		switch ($this->InDB){
 			case true:
-			$update = [];
-			for ($i=0; $i < count($fields) ; $i++) { 
-				$update[] = $fields[$i]."=".$values[$i];
-			}
-			$update = implode(', ',$update);
 			$where = 'id='.$this->getFieldValue('id');
-			$db->makeQuery("
-				UPDATE $this->tableName 
-				SET $update 
-				WHERE $where; 
-				");
+			$res = $db->update($this->tableName, $fieldsValues, $where);
+			if(!$res) return false;
 			break;
 			case false:
-			$fields = implode(', ',$fields);
-			$values = implode(', ',$values);
-			$res = $db->makeQuery("INSERT INTO $this->tableName ($fields) VALUES ($values)");
-			vd($res);
+			$res = $db->insert($this->tableName, $fieldsValues);
+			if(!$res) return false;
+			$this->InDB = true;
+			$this->setId($res);
 			break;
 			default:
 			break;
@@ -99,7 +102,15 @@ abstract class TableRow
 		$db->disconnect();
 		return $this;
 	}
-
+	public function delete(){
+		$where = 'id='.$this->getFieldValue('id');
+		$db = DB::getInstance();
+		$db->connect();
+		$res = $db->delete($this->tableName, $where);
+		$db->disconnect();
+		if($res) return false;
+		else return $this;
+	}
 	public function getTableName(){
 		return $this->tableName;
 	}
@@ -107,6 +118,7 @@ abstract class TableRow
 	public function getFieldsNames(){
 		return implode(', ',array_keys($this->fields));
 	}
+	
 	public function toArray(){
 		$arr = [];
 		foreach ($this->fields as $key => $field) {

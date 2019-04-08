@@ -34,10 +34,16 @@ class DB extends Singleton
 		}
 		return $row;
 	}
-	public function select($tableName = false, $fields = '*', $where = ''){
+	public function select($tableName = false, $fields = '*', $where = '',  $limit = '', $orderBy = ''){
 		if(!$tableName) return false;
 		if($where !== ''){
 			$where = 'WHERE '.$where;
+		}
+		if($limit !== ''){
+			$limit = 'LIMIT '.$limit;
+		}
+		if($orderBy !== ''){
+			$orderBy = 'ORDER BY '.$orderBy;
 		}
 		$res = self::$mysqli->query("
 				SELECT
@@ -45,9 +51,13 @@ class DB extends Singleton
 				FROM
 				$tableName
 				$where
+				$orderBy
+				$limit
 			");
 		if(self::$mysqli->errno > 0) return false;
-		return $res->fetch_all(MYSQLI_ASSOC);
+		$data = $res->fetch_all(MYSQLI_ASSOC);
+		if(empty($data)) return false;
+		return $data;
 	}
 	public function insert($tableName = false, $fieldsValues = []){
 		if(!$tableName || empty($fieldsValues)) return false;
@@ -55,7 +65,7 @@ class DB extends Singleton
 		$values = [];
 		foreach ($fieldsValues as $key => $value) {
 			$fields[] = $key;
-			$values[] = is_string($value) ? '\''.$value.'\'' : $value;
+			$values[] = is_string($value) ? $value : $value;
 		}
 
 		$fields = implode(',', $fields);
@@ -67,6 +77,32 @@ class DB extends Singleton
 			);
 		if(self::$mysqli->errno > 0) return false;
 		return self::$mysqli->insert_id;
+	}
+	public function update($tableName = false, $fieldsValues = [], $where = false){
+
+		if(!$tableName || empty($fieldsValues) || !$where) return false;
+		$update = [];
+		foreach ($fieldsValues as $key => $value) {
+			$update[] = $key.'='.$value;
+		}
+		
+		$update = implode(', ',$update);
+		self::$mysqli->query("
+			UPDATE $tableName 
+			SET $update 
+			WHERE $where; 
+			");
+		if(self::$mysqli->errno > 0) return false;
+		return self::$mysqli->affected_rows;
+	}
+	public function delete($tableName = false, $where = false){
+		if(!$tableName || !$where) return false;
+		self::$mysqli->query("
+			DELETE FROM $tableName
+			WHERE $where
+			");
+		if(self::$mysqli->errno > 0) return false;
+		return self::$mysqli->affected_rows;
 	}
 
 }
